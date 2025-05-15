@@ -9,6 +9,25 @@ except ImportError:
     print("ERRO: Não foi possível importar o módulo db_config. Verifique se o arquivo db_config.py está no mesmo diretório.")
     sys.exit(1)
 
+def limpar_colecao():
+    """Limpa todos os documentos da coleção MongoDB"""
+    try:
+        client, db, collection = get_mongodb_connection()
+        
+        if collection is None:
+            print("Não foi possível conectar ao MongoDB. Verifique a conexão.")
+            return False
+        
+        resultado = collection.delete_many({})
+        print(f"Coleção limpa com sucesso! {resultado.deleted_count} documentos removidos.")
+        return True
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"Erro ao limpar a coleção: {e}")
+        return False
+
 def import_csv_to_mongodb(csv_path):
     """Importa dados de um arquivo CSV para o MongoDB"""
     csv_file = Path(csv_path)
@@ -28,7 +47,8 @@ def import_csv_to_mongodb(csv_path):
         df = pd.read_csv(csv_file)
         print(f"CSV carregado com sucesso: {len(df)} linhas.")
         
-        required_columns = ['temperatura', 'umidade']
+        # Adicionando 'status' às colunas obrigatórias
+        required_columns = ['temperatura', 'umidade', 'status']
         if not all(col in df.columns for col in required_columns):
             missing = [col for col in required_columns if col not in df.columns]
             print(f"Erro: Colunas necessárias ausentes no CSV: {missing}")
@@ -67,9 +87,28 @@ def import_csv_to_mongodb(csv_path):
         return False
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Uso: python import_csv.py caminho_para_arquivo.csv")
+    if len(sys.argv) < 2:
+        print("Uso: python import_csv.py [--limpar] caminho_para_arquivo.csv")
+        print("  --limpar: Limpa a coleção antes de importar (opcional)")
         sys.exit(1)
     
-    success = import_csv_to_mongodb(sys.argv[1])
+    limpar = False
+    csv_path = ""
+    
+    if sys.argv[1] == "--limpar":
+        limpar = True
+        if len(sys.argv) < 3:
+            print("Erro: Caminho do arquivo CSV não fornecido após --limpar")
+            sys.exit(1)
+        csv_path = sys.argv[2]
+    else:
+        csv_path = sys.argv[1]
+    
+    if limpar:
+        print("Limpando a coleção existente...")
+        if not limpar_colecao():
+            sys.exit(1)
+    
+    print(f"Importando dados do arquivo: {csv_path}")
+    success = import_csv_to_mongodb(csv_path)
     sys.exit(0 if success else 1)
