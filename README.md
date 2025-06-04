@@ -10,7 +10,7 @@ Pré-requisitos:
 
 Como executar o projeto:
 
-1. Clone o repositório
+1. Clone o repositório.
 
 ```bash
 git clone <url-do-seu-repositorio>
