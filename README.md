@@ -14,10 +14,9 @@ Dashboard em tempo real para monitoramento de temperatura e umidade usando ESP32
 
 ## Como executar o projeto
 
-### 1. Clone o repositório
 
 ```bash
-git clone <url-do-seu-repositorio>
+git clone <https://github.com/wmarquesb/projeto-esp32-temperatura>
 cd projeto-esp32-temperatura
 ```
 
