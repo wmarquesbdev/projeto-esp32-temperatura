@@ -2,34 +2,39 @@
 
 Dashboard em tempo real para monitoramento de temperatura e umidade usando ESP32, MongoDB e Streamlit.
 
-Pré-requisitos:
+## Arquitetura do Sistema
+
+![Arquitetura do Sistema](docs/arquitetura-sistema.png)
+
+## Pré-requisitos
 
 - Python 3.8+
 - MongoDB Community Server
 - Git (para clonar o repositório)
 
-Como executar o projeto:
+## Como executar o projeto
 
-1. Clone o repositório
+### 1. Clone o repositório
 
 ```bash
 git clone <url-do-seu-repositorio>
 cd projeto-esp32-temperatura
 ```
 
-2. Instale o MongoDB
+### 2. Instale o MongoDB
 
-- Windows: Baixe e instale o MongoDB Community Server (https://www.mongodb.com/try/download/community)
-- Durante a instalação: Marque a opção "Install MongoDB as a Service"
-- Verifique se está rodando: Abra o "MongoDB Compass" ou verifique nos serviços do Windows
+- **Windows**: Baixe e instale o MongoDB Community Server (https://www.mongodb.com/try/download/community)
+  - Durante a instalação: Marque a opção "Install MongoDB as a Service"
+  - Verifique se está rodando: Abra o "MongoDB Compass" ou verifique nos serviços do Windows
 
-3. Instale as dependências Python
+### 3. Instale as dependências Python
 
 ```bash
+cd backend/
 pip install -r requirements.txt
 ```
 
-4. Configure o arquivo .env
+### 4. Configure o arquivo .env
 
 Crie um arquivo `.env` na pasta `backend/` com o seguinte conteúdo:
 
@@ -61,9 +66,9 @@ UMID_MIN_CRITICO=10
 UMID_MAX_CRITICO=95
 ```
 
-5. Execute o sistema
+### 5. Execute o sistema
 
-Opção 1: Executar tudo junto (recomendado)
+**Opção 1: Executar tudo junto (recomendado)**
 
 ```bash
 # Na pasta backend/
@@ -81,7 +86,7 @@ streamlit run dashboard.py
 
 - O dashboard estará em: `http://localhost:8501`
 
-6. Teste o sistema
+### 6. Teste o sistema
 
 Teste a API manualmente:
 
@@ -97,7 +102,7 @@ Ou acesse:
 - Dashboard: `http://localhost:8501`
 - API: `http://localhost:5000`
 
-7. Importar dados históricos (opcional)
+### 7. Importar dados históricos (opcional)
 
 Se você tem dados em CSV para testar:
 
@@ -106,7 +111,7 @@ Se você tem dados em CSV para testar:
 python import_csv.py seu_arquivo.csv
 ```
 
-Configuração do ESP32:
+## Configuração do ESP32
 
 No código do seu ESP32, configure:
 
@@ -120,9 +125,30 @@ Para descobrir seu IP:
 - Windows: `ipconfig` no CMD
 - Linux/Mac: `ifconfig` no terminal
 
-Problemas Comuns:
+## Estrutura do Projeto
 
-MongoDB não conecta
+```
+PROJETO-ESP32-TEMPERATURA/
+├── backend/
+│   ├── main.py              # API Flask
+│   ├── dashboard.py         # Dashboard Streamlit
+│   ├── config.py           # Configurações
+│   ├── db_config.py        # Config MongoDB
+│   ├── import_csv.py       # Importar dados
+│   ├── utils.py            # Utilitários
+│   ├── requirements.txt    # Dependências
+│   ├── .env               # Variáveis de ambiente
+│   └── dht11_simulated_data_90days.csv
+├── esp32/
+│   ├── src/main.cpp       # Código ESP32
+│   ├── platformio.ini     # Config PlatformIO
+│   └── ...
+└── README.md
+```
+
+## Problemas Comuns
+
+**MongoDB não conecta**
 
 ```bash
 # Verifique se o MongoDB está rodando
@@ -130,7 +156,7 @@ MongoDB não conecta
 # Ou tente reinstalar o MongoDB Community Server
 ```
 
-Erro de dependências Python
+**Erro de dependências Python**
 
 ```bash
 # Tente atualizar o pip
@@ -138,17 +164,30 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Dashboard não carrega
+**Dashboard não carrega**
 
 ```bash
 # Certifique-se que a API está rodando primeiro
 # Verifique se não há conflito de portas
 ```
 
-Como usar:
+## Como usar
 
 1. Inicie a API e Dashboard seguindo os passos acima
 2. Configure seu ESP32 com o IP correto
 3. Acesse o dashboard em `http://localhost:8501`
 4. Monitore os dados em tempo real
 5. Configure alertas editando os limites no `.env`
+
+## API Endpoints
+
+- `POST /data` - Recebe dados dos sensores
+- `GET /health` - Status da API
+- `GET /latest` - Últimas leituras
+
+## Tecnologias
+
+- **Hardware**: ESP32, DHT11/DHT22
+- **Backend**: Python, Flask, MongoDB
+- **Frontend**: Streamlit
+- **Comunicação**: HTTP/WiFi
