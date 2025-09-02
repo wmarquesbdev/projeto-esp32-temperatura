@@ -1,4 +1,4 @@
-# Sistema de Monitoramento ESP32 - Temperatura e Umidade.
+# Sistema de Monitoramento ESP32 - Temperatura e Umidade
 
 Dashboard em tempo real para monitoramento de temperatura e umidade usando ESP32, MongoDB e Streamlit.
 
