@@ -15,7 +15,7 @@ Dashboard em tempo real para monitoramento de temperatura e umidade usando ESP32
 ## Como executar o projeto
 
 ```bash
-git clone <https://github.com/wmarquesb/projeto-esp32-temperatura>
+git clone https://github.com/wmarquesbdev/projeto-esp32-temperatura.git
 cd projeto-esp32-temperatura
 ```
 
@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 ### 4. Configure o arquivo .env
 
-Crie um arquivo `.env` na pasta `backend/` com o seguinte conteúdo:
+Copie `backend/.env.example` para `backend/.env` e ajuste os valores para o seu ambiente. O arquivo `.env` é local e não deve ser enviado ao GitHub.
 
 ```env
 # Configurações do MongoDB
@@ -116,6 +116,7 @@ No código do seu ESP32, configure:
 ```cpp
 // Substitua pelo IP da sua máquina
 const char* servidor = "http://192.168.1.100:5000/data";
+const char* apiKey = "a-mesma-chave-definida-em-API_KEY";
 ```
 
 Para descobrir seu IP:

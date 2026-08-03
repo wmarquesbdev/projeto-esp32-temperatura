@@ -7,6 +7,7 @@
 const char* ssid = "SEU_WIFI_SSID_AQUI";
 const char* password = "SUA_SENHA_WIFI_AQUI";
 const char* serverURL = "http://IP_DO_SEU_SERVIDOR_FLASK:PORTA/data";
+const char* apiKey = "SUA_API_KEY_AQUI";
 
 #define DHT_PIN 2 
 #define DHT_TYPE DHT11
@@ -141,6 +142,7 @@ void sendDataToServer(float temperature, float humidity, String status) {
   Serial.println(serverURL);
   http.begin(serverURL);
   http.addHeader("Content-Type", "application/json");
+  http.addHeader("X-API-KEY", apiKey);
 
   DynamicJsonDocument doc(512); 
   doc["temperatura"] = temperature;
@@ -193,6 +195,7 @@ void sendErrorData(String errorType, String errorMessage) {
   HTTPClient http;
   http.begin(serverURL);
   http.addHeader("Content-Type", "application/json");
+  http.addHeader("X-API-KEY", apiKey);
 
   DynamicJsonDocument doc(300);
   doc["status"] = errorType;
