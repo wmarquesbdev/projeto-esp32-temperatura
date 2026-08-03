@@ -55,6 +55,7 @@ def index():
     })
 
 @app.route('/data', methods=['POST'])
+@require_api_key
 def receive_data():
     if collection is None:
         return jsonify({"status": "error", "message": "Banco de dados não disponível"}), 503
